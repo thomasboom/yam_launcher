@@ -104,11 +104,19 @@ class UIUtils(private val context: Context) {
                 }
             }
             hasMethod(view, "setTextColor") -> {
-                (view as TextView).setTextColor(color)
-                view.compoundDrawables[0]?.colorFilter =
+                val textView = view as TextView
+                textView.setTextColor(color)
+                textView.compoundDrawables[0]?.colorFilter =
                     BlendModeColorFilter(sharedPreferenceManager.getTextColor(), BlendMode.SRC_ATOP)
-                view.compoundDrawables[2]?.colorFilter =
+                textView.compoundDrawables[2]?.colorFilter =
                     BlendModeColorFilter(sharedPreferenceManager.getTextColor(), BlendMode.SRC_ATOP)
+
+                // Apply text shadow if enabled
+                if (sharedPreferenceManager.isTextShadowEnabled()) {
+                    textView.setShadowLayer(4f, 2f, 2f, Color.BLACK)
+                } else {
+                    textView.setShadowLayer(0f, 0f, 0f, Color.TRANSPARENT)
+                }
             }
             else -> {
                 view.setBackgroundColor(color)
@@ -149,6 +157,13 @@ class UIUtils(private val context: Context) {
         view.compoundDrawables[0]?.alpha = "A9".toInt(16)
         view.compoundDrawables[2]?.mutate()?.colorFilter = BlendModeColorFilter(color, BlendMode.SRC_ATOP)
         view.compoundDrawables[2]?.alpha = "A9".toInt(16)
+
+        // Apply text shadow if enabled
+        if (sharedPreferenceManager.isTextShadowEnabled()) {
+            view.setShadowLayer(4f, 2f, 2f, Color.BLACK)
+        } else {
+            view.setShadowLayer(0f, 0f, 0f, Color.TRANSPARENT)
+        }
     }
 
     fun setTextFont(view: View) {
@@ -169,32 +184,51 @@ class UIUtils(private val context: Context) {
         var font = sharedPreferenceManager.getTextFont()
         val style = sharedPreferenceManager.getTextStyle()
 
-        if (font == "system") {
-            val typedArray = context.obtainStyledAttributes(android.R.style.TextAppearance_DeviceDefault, intArrayOf(android.R.attr.fontFamily))
-            font = typedArray.getString(0)
-            typedArray.recycle()
-        }
-
-        val fontId = FontMap.fonts[font]
-
-        val newFont = if (fontId != null) {
-            ResourcesCompat.getFont(context, fontId)
-        } else {
-            Typeface.create(font, Typeface.NORMAL)
+        val newFont = when (font) {
+            "system" -> {
+                val typedArray = context.obtainStyledAttributes(android.R.style.TextAppearance_DeviceDefault, intArrayOf(android.R.attr.fontFamily))
+                val systemFont = typedArray.getString(0)
+                typedArray.recycle()
+                if (systemFont != null) {
+                    Typeface.create(systemFont, Typeface.NORMAL)
+                } else {
+                    Typeface.DEFAULT
+                }
+            }
+            "casual" -> Typeface.SANS_SERIF
+            "cursive" -> Typeface.SANS_SERIF // or Typeface.create("cursive", Typeface.NORMAL) if available
+            "monospace" -> Typeface.MONOSPACE
+            "sans-serif" -> Typeface.SANS_SERIF
+            "serif" -> Typeface.SERIF
+            "sans-serif-light", "sans-serif-thin", "sans-serif-condensed", "sans-serif-condensed-light", "sans-serif-smallcaps" -> {
+                // For these system-defined fonts, create using the string name
+                // If the system doesn't have the font, it will fall back to default
+                Typeface.create(font, Typeface.NORMAL)
+            }
+            else -> {
+                // For custom fonts, get from FontMap
+                val fontId = FontMap.fonts[font]
+                if (fontId != null) {
+                    ResourcesCompat.getFont(context, fontId)
+                } else {
+                    // Fallback to default if font not found
+                    Typeface.DEFAULT
+                }
+            }
         }
 
         when (style) {
             "normal" -> {
-                view.setTypeface(Typeface.create(newFont, Typeface.NORMAL))
+                view.typeface = newFont
             }
             "bold" -> {
-                view.setTypeface(Typeface.create(newFont, Typeface.BOLD))
+                view.typeface = Typeface.create(newFont, Typeface.BOLD)
             }
             "italic" -> {
-                view.setTypeface(Typeface.create(newFont, Typeface.ITALIC))
+                view.typeface = Typeface.create(newFont, Typeface.ITALIC)
             }
             "bold-italic" -> {
-                view.setTypeface(Typeface.create(newFont, Typeface.BOLD_ITALIC))
+                view.typeface = Typeface.create(newFont, Typeface.BOLD_ITALIC)
             }
         }
     }

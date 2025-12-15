@@ -1,6 +1,6 @@
 <resources>
     <!--Home Screen-->
-    <string name="shortcut_default">App</string>
+    <string name="shortcut_default">Long press to add an app</string>
 
     <string name="shortcut_default_click">Long click to select an app</string>
 
@@ -63,6 +63,7 @@
     <string name="text_color">Text Color</string>
     <string name="text_font">Text Font</string>
     <string name="text_style">Text Style</string>
+    <string name="text_shadow">Text Shadow</string>
 
     <string name="operation">Operation</string>
     <string name="animation_speed">Animation Speed</string>
@@ -157,10 +158,14 @@
     <!--About Page Items-->
     <string name="about_title">About YAM Launcher</string>
     <string name="app_icon">App Icon</string>
-    <string name="creditName">By Otto Petäjä</string>
+    <string name="creditName">created by Otto, maintained by ThomasNow Productions</string>
     <string name="source_code">Source Code</string>
     <string name="codeberg">Codeberg</string>
     <string name="github">GitHub</string>
+    <string name="view_github">View this project on GitHub</string>
+    <string name="install_fdroid">Install on F-Droid</string>
+    <string name="install_izzy">Install on IzzyOnDroid</string>
+    <string name="install_play">Install on Google Play</string>
 
     <string name="reset">Reset</string>
     <string name="restart_text">Restart YAM Launcher</string>

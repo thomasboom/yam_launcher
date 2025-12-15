@@ -1,6 +1,6 @@
 <resources>
     <!--Home Screen-->
-    <string name="shortcut_default">App</string>
+    <string name="shortcut_default">Lange drücken, um eine App hinzuzufügen</string>
 
     <string name="shortcut_default_click">Gedrückt halten zum Wählen einer App</string>
 
@@ -156,10 +156,14 @@
     <!--About Page Items-->
     <string name="about_title">Über YAM Launcher</string>
     <string name="app_icon">App-Symbol</string>
-    <string name="creditName">von Otto Petäjä</string>
+    <string name="creditName">Erstellt von Otto, gepflegt von ThomasNow Productions</string>
     <string name="source_code">Quellcode</string>
     <string name="codeberg">Codeberg</string>
     <string name="github">GitHub</string>
+    <string name="view_github">Projekt auf GitHub ansehen</string>
+    <string name="install_fdroid">Auf F-Droid installieren</string>
+    <string name="install_izzy">Auf IzzyOnDroid installieren</string>
+    <string name="install_play">Im Google Play Store installieren</string>
 
     <string name="reset">Reset</string>
     <string name="restart_text">YAM Launcher neu starten</string>
