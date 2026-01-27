@@ -152,6 +152,32 @@ class UIUtils(private val context: Context) {
                     }
                 }
             }
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
+            @Suppress("DEPRECATION")
+            val decorView = window.decorView
+            @Suppress("DEPRECATION")
+            var systemUiVisibility = decorView.systemUiVisibility
+            when (sharedPreferenceManager.getTextString()) {
+                "#FFF3F3F3" -> {
+                    systemUiVisibility = systemUiVisibility and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
+                }
+                "#FF0C0C0C" -> {
+                    systemUiVisibility = systemUiVisibility or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                }
+                "material" -> {
+                    val currentNightMode = context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+                    when (currentNightMode) {
+                        Configuration.UI_MODE_NIGHT_YES -> {
+                            systemUiVisibility = systemUiVisibility and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
+                        }
+                        Configuration.UI_MODE_NIGHT_NO -> {
+                            systemUiVisibility = systemUiVisibility or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                        }
+                    }
+                }
+            }
+            @Suppress("DEPRECATION")
+            decorView.systemUiVisibility = systemUiVisibility
         }
     }
 
